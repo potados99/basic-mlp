@@ -5,15 +5,30 @@
 #include "random.h"
 #include "activation.h"
 
-#define INPUT_SIZE 2
 #define HIDDEN_SIZE 4
 #define OUTPUT_SIZE 1
-#define LEARNING_RATE 0.1f
-#define DATASET_SIZE 4
 
-// 학습 데이터 (XOR 문제)
-double X[DATASET_SIZE][INPUT_SIZE] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-double y[DATASET_SIZE] = {0, 1, 1, 0};
+#define LEARNING_RATE 0.009f
+#define EPOCHS 1000000
+
+#define INPUT_SIZE 2
+#define DATASET_SIZE 5
+
+// 학습 데이터 (기온, 습도 -> 비 올 확률, 정규화됨)
+double X[DATASET_SIZE][INPUT_SIZE] = {
+    {0.0008155970599585504, 0.3671065876906898},
+    {0.09438936020373064, 0.893161212420147},
+    {0.035482817128173895, 0.4482304623480121},
+    {0.38440866478481384, 0.5153324993799973},
+    {0.30, 0.70}
+};
+double y[DATASET_SIZE] = {
+    1,
+    0,
+    0,
+    0,
+    1
+};
 
 int main() {
     srand(time(0));
@@ -39,7 +54,7 @@ int main() {
         b2[i] = random_weight();
 
     // 학습
-    int epochs = 100000;
+    int epochs = EPOCHS;
     for (int epoch = 0; epoch < epochs; epoch++) {
         double total_loss = 0.0;
 
@@ -114,7 +129,7 @@ int main() {
             a2[j] = sigmoid(z2[j]);
         }
 
-        printf("Input: [%d, %d], Prediction: ", (int)X[i][0], (int)X[i][1]);
+        printf("Input: [%f , %f], Prediction: ", X[i][0], X[i][1]);
         for (int j = 0; j < OUTPUT_SIZE; j++) {
             printf("%.4f ", a2[j]);
         }
