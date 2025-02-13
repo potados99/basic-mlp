@@ -9,7 +9,7 @@
 #define OUTPUT_SIZE 1
 
 #define LEARNING_RATE 0.001f
-#define EPOCHS 1000000
+#define EPOCHS 10000000
 
 #define INPUT_SIZE 3
 #define OUTPUT_SIZE 1
