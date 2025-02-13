@@ -8,21 +8,28 @@
 #define HIDDEN_SIZE 4
 #define OUTPUT_SIZE 1
 
-#define LEARNING_RATE 0.009f
+#define LEARNING_RATE 0.001f
 #define EPOCHS 1000000
 
-#define INPUT_SIZE 2
+#define INPUT_SIZE 3
+#define OUTPUT_SIZE 1
 #define DATASET_SIZE 5
 
-// 학습 데이터 (기온, 습도 -> 비 올 확률, 정규화됨)
+// 학습 데이터 (배고픔, 매운 선호도, 추위 -> 한식 선택 여부)
 double X[DATASET_SIZE][INPUT_SIZE] = {
-    {0.0008155970599585504, 0.3671065876906898},
-    {0.09438936020373064, 0.893161212420147},
-    {0.035482817128173895, 0.4482304623480121},
-    {0.38440866478481384, 0.5153324993799973},
-    {0.30, 0.70}
+    {0.6269, 0.6188, 0.6212},
+    {0.5625, 0.0785, 0.5595},
+    {0.1779, 0.7420, 0.7944},
+    {0.4499, 0.2253, 0.5898},
+    {0.5411, 0.6675, 0.7898}
 };
-double y[DATASET_SIZE] = {1, 0, 0, 0, 1};
+double Y[DATASET_SIZE][OUTPUT_SIZE] = {
+    {1},
+    {0},
+    {1},
+    {0},
+    {1}
+};
 
 // 가중치 및 편향
 double W1[INPUT_SIZE][HIDDEN_SIZE];
@@ -74,7 +81,7 @@ void train() {
 
             // --- 손실 계산 ---
             for (int o = 0; o < OUTPUT_SIZE; o++) {
-                double error = y[i] - a2[o];
+                double error = Y[i][o] - a2[o];
                 total_loss += error * error;
 
                 // --- 역전파 ---
@@ -133,6 +140,27 @@ int main() {
         predict(X[i], prediction);
 
         printf("Input: [%.4f, %.4f] -> Prediction: ", X[i][0], X[i][1]);
+        for (int j = 0; j < OUTPUT_SIZE; j++) {
+            printf("%.4f ", prediction[j]);
+        }
+        printf("\n");
+    }
+
+    // 사용자로부터 입력을 받아서 예측치를 내놓는 루프에 들어가요
+    while (1) {
+        double input[INPUT_SIZE];
+        double prediction[OUTPUT_SIZE];
+        printf("\nInput: ");
+
+        scanf("%lf %lf %lf", &input[0], &input[1]);
+
+        predict(input, prediction);
+
+        printf("Input: [");
+        for (int j = 0; j < INPUT_SIZE; j++) {
+            printf("%.4f ", input[j]);
+        }
+        printf("] -> Prediction: ");
         for (int j = 0; j < OUTPUT_SIZE; j++) {
             printf("%.4f ", prediction[j]);
         }
