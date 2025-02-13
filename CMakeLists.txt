@@ -3,4 +3,6 @@ project(basic_mlp C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(basic_mlp main.c)
+add_executable(basic_mlp main.c activation.c
+        random.c
+        random.h)
